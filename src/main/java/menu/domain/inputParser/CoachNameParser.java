@@ -14,7 +14,7 @@ public class CoachNameParser {
     public static final String ERROR_NAME_LENGTH = "[ERROR] 각 코치의 이름은 최소 " + MIN_NAME_LENGTH + "글자, 최대 " + MAX_NAME_LENGTH + "글자여야 합니다.";
 
     public List<String> parseNames(String input) {
-        List<String> names = Arrays.stream(input.split(","))
+        List<String> names = Arrays.stream(input.split(",", -1))
                 .map(String::trim)
                 .collect(Collectors.toList());
 
