@@ -12,6 +12,7 @@ import menu.view.OutputView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class MenuRecommendationController {
     private final MenuRecommender menuRecommender;
@@ -26,7 +27,10 @@ public class MenuRecommendationController {
 
     public void startRecommendationProcess() {
         OutputView.startRecommendation();
-        processCoachInput();
+        retryUntilSuccess(() -> {
+            processCoachInput();
+            return null;
+        });
         List<Menu> weeklyCategories = categoryRecommender.recommendWeeklyCategories();
         recommendMenus(weeklyCategories);
 
@@ -35,7 +39,8 @@ public class MenuRecommendationController {
     }
 
     private void processCoachInput() {
-        String coachNamesInput = InputView.inputCoachName();
+        String coachNamesInput = retryUntilSuccess(InputView::inputCoachName);
+
         CoachNameParser nameParser = new CoachNameParser();
         List<String> coachNames = nameParser.parseNames(coachNamesInput);
         RestrictedMenuParser parser = new RestrictedMenuParser();
@@ -47,12 +52,21 @@ public class MenuRecommendationController {
         }
     }
 
-
     private void recommendMenus(List<Menu> weeklyCategories) {
         for (Menu category : weeklyCategories) {
             for (Coach coach : coaches) {
                 String recommendedMenu = menuRecommender.recommendMenu(coach, category);
                 coach.addMenu(recommendedMenu);
+            }
+        }
+    }
+
+    static <T> T retryUntilSuccess(Supplier<T> supplier) {
+        while (true) {
+            try {
+                return supplier.get();
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
