@@ -2,12 +2,12 @@ package menu.domain.recommender;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import menu.domain.Coach;
-import menu.domain.constant.MenuCategory;
+import menu.domain.Menu;
 
 import java.util.List;
 
 public class MenuRecommender {
-    public void recommendMenu(Coach coach, MenuCategory category) {
+    public void recommendMenu(Coach coach, Menu category) {
         List<String> menus = category.getMenus();
 
         while(true){
