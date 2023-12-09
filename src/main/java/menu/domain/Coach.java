@@ -24,7 +24,11 @@ public class Coach {
         return new Coach(name, restrictedMenus);
     }
 
-    public void addRecommendedMenu(String menu) {
+    public boolean canAddMenu(String menu) {
+        return !restrictedMenus.contains(menu) && !recommendedMenus.contains(menu);
+    }
+
+    public void addMenu(String menu) {
         recommendedMenus.add(menu);
     }
 }
