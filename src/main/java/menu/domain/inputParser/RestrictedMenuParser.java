@@ -5,6 +5,9 @@ import java.util.stream.Collectors;
 import java.util.Arrays;
 
 public class RestrictedMenuParser {
+    public static final int MAX_RESTRICTED_MENUS = 2;
+    public static final String ERROR_MAX_RESTRICTED_MENUS = "각 코치는 최대 " + MAX_RESTRICTED_MENUS + "개의 못 먹는 메뉴만 입력할 수 있습니다.";
+
     public Set<String> parseMenus(String input) {
         if (input.trim().isEmpty()) {
             return Set.of();
@@ -20,8 +23,8 @@ public class RestrictedMenuParser {
     }
 
     private void validateMenus(Set<String> menus) {
-        if (menus.size() > 2) {
-            throw new IllegalArgumentException("각 코치는 최대 2개의 못 먹는 메뉴만 입력할 수 있습니다.");
+        if (menus.size() > MAX_RESTRICTED_MENUS) {
+            throw new IllegalArgumentException(ERROR_MAX_RESTRICTED_MENUS);
         }
     }
 }
