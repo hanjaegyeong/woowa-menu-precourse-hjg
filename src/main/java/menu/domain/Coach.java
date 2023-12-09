@@ -1,27 +1,16 @@
 package menu.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class Coach {
-    private String name;
-    private Set<String> restrictedMenus;
-    private List<String> recommendedMenus;
+    private final String name;
+    private final Set<String> restrictedMenus;
+    private final List<String> recommendedMenus;
 
     public Coach(String name, Set<String> restrictedMenus) {
         this.name = name;
         this.restrictedMenus = restrictedMenus;
         this.recommendedMenus = new ArrayList<>();
-    }
-
-    public static Coach createCoach(String name, String restrictedMenuString) {
-        Set<String> restrictedMenus = Arrays.stream(restrictedMenuString.split(","))
-                .filter(menu -> !menu.isEmpty())
-                .collect(Collectors.toSet());
-        return new Coach(name, restrictedMenus);
     }
 
     public boolean canAddMenu(String menu) {
@@ -30,5 +19,13 @@ public class Coach {
 
     public void addMenu(String menu) {
         recommendedMenus.add(menu);
+    }
+
+    public String getRecommendedMenu(int index) {
+        return recommendedMenus.get(index);
+    }
+
+    public String getName() {
+        return name;
     }
 }
